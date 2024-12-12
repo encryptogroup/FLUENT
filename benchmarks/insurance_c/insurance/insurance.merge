@@ -1,0 +1,162 @@
+# Merge File for the insurance Company
+
+# -------- INPUTS FOR THE CLIENT -------- #
+
+# --- Categorization of the Car --- #
+# Input 1: HSN of the car - 8 bit - [ 0 7 ]
+# Input 2: TSN of the car - 16 bit - [ 8 23 ]
+# Input 3: First License of the car - 8 bit - [ 24 31 ]
+# Input 4: Driver's License of the car - 8 bit - [ 32 39 ]
+
+# --- Driver's Personal Information --- #
+# Input 5: Age of the Driver - 8 bit - [ 40 47 ]
+# Input 6: Holder of the Policy - 8 bit - [ 48 55 ]
+# Input 7: Since how many years has the driver their license? - 8 bit - [ 56 63 ]
+# Input 8: Job of the driver - 8 bit - [ 64 71 ]
+# Input 9: Number of drivers under 25 years - 8 bit - [ 72 79 ]
+
+# --- Previous Damages of the Driver --- #
+# Input 10: Damage 1 - 32 bit - [ 80 111 ]
+    # How many years ago? - 8 bit
+    # How was is ensured? - 8 bit
+    # How many costs in the workshop? - 16 bit
+# Input 11: Damage 2 - 32 bit - [ 112 143 ]
+    # How many years ago? - 8 bit
+    # How was is ensured? - 8 bit
+    # How many costs in the workshop? - 16 bit
+
+# --- Driver's Background --- #
+# Input 12: Where does the driver live? - 8 bit - [ 144 151 ]
+# Input 13: Number of Points in Flensburg - 8 bit - [ 152 159 ]
+# Input 14: Where does the driver park his car in most cases? - 8 bit - [ 160 167 ]
+# Input 15: Does the driver use the car for private or for business? - 8 bit - [ 168 175 ]
+
+# --- Car Usage Information --- #
+# Input 16: Ensurance duration in month per year - 8 bit - [ 176 183 ]
+# Input 17: Number of km the car is driven per year - 16 bit - [ 184 199 ]
+
+# --- Damage Free Classes --- #
+# Input 18: damage free class for liability - 8 bit - [ 200 207 ]
+# Input 19: damage free class for fully comprehensive - 8 bit - [ 208 215 ]
+
+# --- Scope of the Insurance --- #
+# Input 20: which ensurance scope (liability, partial covered, fully comprehensive) - 8 bit - [ 216 223 ]
+# Input 21: share payed when an accident happens - 16 bit - [ 224 239 ]
+# Input 22: want workshop choice by insurance company? - 8 bit - [ 240 247 ]
+# Input 23: mader coverage? - 8 bit - [ 248 255 ]
+
+
+# --- Discounts ---#
+# Input 24: Payment cycle (year, half, quarter, month) - 8 bit - [ 256 263 ]
+# Input 25: Club Membership - 8 bit - [ 264 271 ]
+# Input 26: Driver has yearly card for public transport - 8 bit - [ 272 279]
+# Input 27: Driver has access to another car - 8 bit - [ 280 287 ]
+
+# --- Protection Letter ---#
+# Input 28: Insurance taker wants a protection letter - 8 bit - [ 288 295 ]
+
+
+C [ 0 295 ]
+
+
+# -------- INPUTS FOR THE SERVER -------- #
+
+# --- Threshold for Age of the Driver --- #
+# Input 29: threshold of the age of the driver when tarifs become more expensive - 8 bit - [ 296 303 ]
+
+# --- Thresholds for Damages --- #
+# Input 30: threshold for workshop costs - 8 bit - [ 304 311 ]
+# Input 31: threshold for how many years ago a damage is - [ 312 319 ]
+
+# --- Additional Charges for Damages --- #
+# Input 32: additional charge for damage with liability ensurance - 32 bit - [ 320 351 ]
+# Input 33: additional charge for damage with partial covered ensurance - 32 bit - [ 352 383 ]
+# Input 34: additional charge for damage with fully comprehensived ensurance - 32 bit - [ 384 415 ]
+# Input 35: additional charge for too high costs in the workshop - 32 bit - [ 416 447 ]
+
+
+S [ 296 447 ]
+
+
+# -------- DESCRIPTION OF CIRCUIT INPUTS AND OUTPUTS -------- #
+
+# --- categorize_car.priv.c --- #
+# inputs: 1 2 3 4
+# outputs: 36 37
+categorize_car.priv.c [ 0 39 ] out [ 448 463 ] [ 464 479 ]
+
+# --- age.pub.c --- #
+# inputs: 5 29
+# outputs: 38
+age.pub.c [ 40 47 ] [ 296 303 ] out [ 480 487 ]
+
+# --- driver.priv.c --- #
+# inputs: 38 6 9 7 8
+# outpus: 39
+driver.priv.c [ 480 487 ] [ 48 55 ] [ 72 79 ] [ 56 71 ] out [ 488 503 ]
+
+# --- damage.pub.c --- #
+# inputs: 10 11 30 31 32 33 34 35
+# outputs: 40
+damage.pub.c [ 80 143 ] [ 304 447 ] out [ 504 535 ]
+
+# --- location.priv.c --- #
+# inputs: 12
+# outputs: 41
+location.priv.c [ 144 151 ] out [ 536 543 ]
+
+# --- flensburg.priv.c --- #
+# inputs: 13
+# outputs: 42
+flensburg.priv.c [ 152 159 ] out [ 544 575 ]
+
+# --- car_usage.priv.c --- #
+# inputs: 14 15
+# outputs: 43
+car_usage.priv.c [ 160 175 ] out [ 576 583 ]
+
+# --- calculate_basic_price.pub.c --- #
+# inputs: 36 41 39 43 40 42
+# outputs: 44
+calculate_basic_price.pub.c [ 448 463 ] [ 536 543 ] [ 488 503 ] [ 576 583 ] [ 504 535 ] [ 544 575 ] out [ 584 615 ]
+
+# --- saison.pub.c --- #
+# inputs: 16 44
+# outputs: 45
+saison.pub.c [ 176 183 ] [ 584 615 ] out [ 616 647 ]
+
+# --- annual_drive.priv.c --- #
+# inputs: 17 45
+# outputs: 46
+annual_drive.priv.c [ 184 199 ] [ 616 647 ] out [ 648 679 ]
+
+# --- driver_person.pub.c --- #
+# inputs: 18 19 46
+# outputs: 47 48 49
+driver_person.pub.c [ 200 215 ] [ 648 679 ] out [ 680 711 ] [ 712 743 ] [ 744 775 ]
+
+# --- insurance_scope.pub.c --- #
+# inputs: 47 48 49 21 20
+# outputs: 50
+insurance_scope.pub.c [ 680 775 ] [ 224 239 ] [ 216 223 ] out [ 776 807 ]
+
+# --- extras.pub.c --- #
+# inputs: 50 22 23 37
+# outputs: 51
+extras.pub.c [ 776 807 ] [ 240 255 ] [ 464 479 ] out [ 808 839 ]
+
+# --- discount.pub.c --- #
+# inputs: 50 24 25 26 27
+# outputs: 52
+discount.pub.c [ 776 807 ] [ 256 287 ] out [ 840 871 ]
+
+# --- protletter.pub.c --- #
+# inputs: 50 51 52 28
+# outputs: 53
+protletter.pub.c [ 776 871 ] [ 288 295 ] out [ 872 903 ]
+
+
+# -------- OUTPUTS ------- #
+
+# Output: 53
+outputs [ 856 887 ]

@@ -1,0 +1,9 @@
+hamming256/hamming256_priv.v_none_2_luc.spfe
+hamming256/hamming256_priv.v_none_2_vuc.spfe
+hamming256/hamming256_priv.v_none_3_luc.spfe
+hamming256/hamming256_priv.v_none_3_vuc.spfe
+hamming256/hamming256_priv.v_none_4_luc.spfe
+hamming256/hamming256_priv.v_none_4_vuc.spfe
+hamming256/hamming256_priv.v_none_8_luc.spfe
+hamming256/hamming256_priv.v_none_8_vuc.spfe
+hamming256/hamming256_pub.v_none_2_luc.spfe

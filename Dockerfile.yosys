@@ -1,0 +1,9 @@
+FROM ubuntu:22.04 as build
+
+RUN apt-get update -y
+RUN DEBIAN_FRONTEND=noninteractive apt-get install -y curl build-essential libreadline-dev python3 pkg-config tcl-dev libffi-dev flex bison git
+
+WORKDIR /root
+RUN curl -LS https://github.com/YosysHQ/yosys/archive/refs/tags/yosys-0.37.tar.gz | tar xz
+
+RUN cd yosys-yosys-0.37 && make config-gcc && make -j$(nproc)
