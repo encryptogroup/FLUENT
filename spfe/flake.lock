@@ -1,0 +1,94 @@
+{
+  "nodes": {
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1644229661,
+        "narHash": "sha256-1YdnJAsNy69bpcjuoKdOYQX0YxZBiCYZo4Twxerqv7k=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "3cecb5b042f7f209c56ffd8371b2711a290ec797",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
+      "locked": {
+        "lastModified": 1659877975,
+        "narHash": "sha256-zllb8aq3YO3h8B/U0/J1WBgAL8EX5yWf5pMj3G0NAmc=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "c0e246b9b83f637f4681389ecabcb2681b4f3af0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1646497237,
+        "narHash": "sha256-Ccpot1h/rV8MgcngDp5OrdmLTMaUTbStZTR5/sI7zW0=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "062a0c5437b68f950b081bbfc8a699d57a4ee026",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1661151577,
+        "narHash": "sha256-++S0TuJtuz9IpqP8rKktWyHZKpgdyrzDFUXVY07MTRI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "54060e816971276da05970a983487a25810c38a7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "root": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs",
+        "zig-overlay": "zig-overlay"
+      }
+    },
+    "zig-overlay": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1667780742,
+        "narHash": "sha256-w3zxRmFmU4x/BBV1t+Plp2KdbVag+caFbLQIS9zXw6s=",
+        "owner": "mitchellh",
+        "repo": "zig-overlay",
+        "rev": "b6a256a10c6fcc228c54d676dd7867ffe4788e4b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mitchellh",
+        "repo": "zig-overlay",
+        "type": "github"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}

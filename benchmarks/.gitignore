@@ -1,0 +1,4 @@
+*.spfe
+*.prog
+benchmarks/
+csv/

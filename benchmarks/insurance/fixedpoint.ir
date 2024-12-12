@@ -1,0 +1,71 @@
+package fixedpoint
+
+fn __fixedpoint__fixedpt_mul(a: bits[32], b: bits[32]) -> bits[32] {
+  zero_ext.6: bits[64] = zero_ext(a, new_bit_count=64, id=6)
+  zero_ext.7: bits[64] = zero_ext(b, new_bit_count=64, id=7)
+  FIXEDPOINT_BITS: bits[32] = literal(value=32, id=3, pos=0,2,28)
+  FIXEDPOINT_INTEGER_BITS: bits[32] = literal(value=16, id=4, pos=0,3,36)
+  umul.8: bits[64] = umul(zero_ext.6, zero_ext.7, id=8, pos=0,9,15)
+  FIXEDPOINT_FRACTION_BITS: bits[32] = sub(FIXEDPOINT_BITS, FIXEDPOINT_INTEGER_BITS, id=5, pos=0,4,49)
+  shrl.9: bits[64] = shrl(umul.8, FIXEDPOINT_FRACTION_BITS, id=9, pos=0,9,29)
+  ret bit_slice.10: bits[32] = bit_slice(shrl.9, start=0, width=32, id=10)
+}
+
+fn __fixedpoint__fixedpt_div(a: bits[32], b: bits[32]) -> bits[32] {
+  FIXEDPOINT_BITS: bits[32] = literal(value=32, id=13, pos=0,2,28)
+  FIXEDPOINT_INTEGER_BITS: bits[32] = literal(value=16, id=14, pos=0,3,36)
+  zero_ext.16: bits[64] = zero_ext(a, new_bit_count=64, id=16)
+  FIXEDPOINT_FRACTION_BITS: bits[32] = sub(FIXEDPOINT_BITS, FIXEDPOINT_INTEGER_BITS, id=15, pos=0,4,49)
+  shll.17: bits[64] = shll(zero_ext.16, FIXEDPOINT_FRACTION_BITS, id=17, pos=0,13,15)
+  zero_ext.18: bits[64] = zero_ext(b, new_bit_count=64, id=18)
+  udiv.19: bits[64] = udiv(shll.17, zero_ext.18, id=19, pos=0,13,44)
+  ret bit_slice.20: bits[32] = bit_slice(udiv.19, start=0, width=32, id=20)
+}
+
+fn __std__abs__8(x: bits[8]) -> bits[8] {
+  literal.23: bits[8] = literal(value=0, id=23, pos=0,121,18)
+  slt.24: bits[1] = slt(x, literal.23, id=24, pos=0,121,7)
+  neg.25: bits[8] = neg(x, id=25, pos=0,121,22)
+  BITS: bits[32] = literal(value=8, id=22, pos=0,120,11)
+  ret sel.26: bits[8] = sel(slt.24, cases=[x, neg.25], id=26, pos=0,121,2)
+}
+
+fn ____fixedpoint__fixedpt_pow_counted_for_0_body(i: bits[32], __loop_carry: (bits[8], bits[32], bits[32])) -> (bits[8], bits[32], bits[32]) {
+  tuple_index.39: bits[8] = tuple_index(__loop_carry, index=0, id=39)
+  literal.48: bits[8] = literal(value=1, id=48, pos=0,22,28)
+  literal.38: bits[1] = literal(value=1, id=38)
+  literal.40: bits[1] = literal(value=1, id=40)
+  and.49: bits[8] = and(tuple_index.39, literal.48, id=49, pos=0,22,23)
+  literal.50: bits[8] = literal(value=1, id=50, pos=0,22,37)
+  tuple_index.45: bits[32] = tuple_index(__loop_carry, index=2, id=45)
+  tuple_index.42: bits[32] = tuple_index(__loop_carry, index=1, id=42)
+  and.41: bits[1] = and(literal.38, literal.40, id=41)
+  literal.43: bits[1] = literal(value=1, id=43)
+  literal.54: bits[1] = literal(value=1, id=54, pos=0,24,10)
+  eq.51: bits[1] = eq(and.49, literal.50, id=51, pos=0,22,31)
+  invoke.52: bits[32] = invoke(tuple_index.45, tuple_index.42, to_apply=__fixedpoint__fixedpt_mul, id=52, pos=0,22,52)
+  and.44: bits[1] = and(and.41, literal.43, id=44)
+  literal.46: bits[1] = literal(value=1, id=46)
+  shra.55: bits[8] = shra(tuple_index.39, literal.54, id=55, pos=0,24,7)
+  invoke.56: bits[32] = invoke(tuple_index.42, tuple_index.42, to_apply=__fixedpoint__fixedpt_mul, id=56, pos=0,24,24)
+  result: bits[32] = sel(eq.51, cases=[tuple_index.45, invoke.52], id=53, pos=0,22,17)
+  and.47: bits[1] = and(and.44, literal.46, id=47)
+  ret tuple.57: (bits[8], bits[32], bits[32]) = tuple(shra.55, invoke.56, result, id=57, pos=0,24,4)
+}
+
+fn __fixedpoint__fixedpt_pow(p: bits[32], b: bits[8]) -> bits[32] {
+  FIXEDPOINT_BITS: bits[32] = literal(value=32, id=29, pos=0,2,28)
+  FIXEDPOINT_INTEGER_BITS: bits[32] = literal(value=16, id=30, pos=0,3,36)
+  literal.32: bits[32] = literal(value=1, id=32, pos=0,6,27)
+  FIXEDPOINT_FRACTION_BITS: bits[32] = sub(FIXEDPOINT_BITS, FIXEDPOINT_INTEGER_BITS, id=31, pos=0,4,49)
+  b2: bits[8] = invoke(b, to_apply=__std__abs__8, id=34, pos=0,17,19)
+  result: bits[32] = shll(literal.32, FIXEDPOINT_FRACTION_BITS, id=33, pos=0,6,29)
+  tuple.35: (bits[8], bits[32], bits[32]) = tuple(b2, p, result, id=35, pos=0,25,4)
+  work: (bits[8], bits[32], bits[32]) = counted_for(tuple.35, trip_count=8, stride=1, body=____fixedpoint__fixedpt_pow_counted_for_0_body, id=58)
+  literal.61: bits[8] = literal(value=0, id=61, pos=0,27,13)
+  result__1: bits[32] = tuple_index(work, index=2, id=60, pos=0,26,19)
+  slt.62: bits[1] = slt(b, literal.61, id=62, pos=0,27,8)
+  invoke.63: bits[32] = invoke(result, result__1, to_apply=__fixedpoint__fixedpt_div, id=63, pos=0,27,29)
+  literal.59: bits[32] = literal(value=2, id=59, pos=0,26,20)
+  ret sel.64: bits[32] = sel(slt.62, cases=[result__1, invoke.63], id=64, pos=0,27,2)
+}
