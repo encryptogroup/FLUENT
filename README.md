@@ -13,12 +13,13 @@ After the review process is finished, we will publish our code in a public GitHu
 
 ### Step 1: Compiling circuits
 
+<a target="_blank" href="https://colab.research.google.com/github/encryptogroup/FLUENT/blob/main/fluent.ipynb">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
 We provide a Jupyter notebook `fluent.ipynb` for easy testing of our
 circuit compilation workflow. This notebook can be conveniently
-executed in [Google Colab](https://colab.research.google.com) by
-uploading the `fluent.ipynb` notebook. After the review process is
-finished, we will provide a publicly accessible Google Colab notebook
-link.
+executed in [Google Colab](https://colab.research.google.com).
 
 The Jupyter notebook uses pre-built binaries in order to speed up
 compilation. Information on reproducing these binaries is available in
