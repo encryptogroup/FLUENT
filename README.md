@@ -7,8 +7,6 @@ This repository contains the code for our paper. Our framework consists of 4 com
 - SPFE compiler (our work, `spfe/`): This is the main program which compiles C/C++ or Verilog to a SPFE file
 - UC compiler[2] (included in SPFE compiler, `spfe/uc/`): The UC compiler is the reference implementation to the corresponding paper, which is open-source.
 
-After the review process is finished, we will publish our code in a public GitHub repository.
-
 ## Instructions
 
 ### Step 1: Compiling circuits
