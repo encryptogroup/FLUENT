@@ -831,7 +831,7 @@ void YaoServerSharing::EvaluateOutputGate(GATE* gate) {
 	//InstantiateGate(gate);
 
 	gate->gs.val = (UGATE_T*) calloc(ceil_divide(gate->nvals, GATE_T_BITS), sizeof(UGATE_T));
-	gate->instantiated = true;
+	gate->instantiated = gate->gs.oshare.dst == SERVER;
 	for (uint32_t i = 0; i < gate->nvals; i++) {
 		gate->gs.val[i / GATE_T_BITS] |= (((UGATE_T) m_vGates[parentid].gs.yinput.pi[i]) << (i % GATE_T_BITS));
 	}

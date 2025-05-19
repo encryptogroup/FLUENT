@@ -248,11 +248,13 @@ int32_t test_universal_circuit(e_role role, char *address, uint16_t port,
    */
   party->ExecCircuit();
 
-  uint32_t val = 0;
   std::cout << std::endl << "OUTPUTS: ";
   for (uint32_t i = 0; i < outputs.size(); i++) {
-    val = circ->GetOutputGateValue(outputs[i])[0];
-    std::cout << val;
+    UGATE_T *val;
+    auto nvals = circ->GetOutputGateValue(outputs[i], val);
+    if (nvals != 1) continue;
+
+    std::cout << val[0];
   }
   std::cout << std::endl;
 
