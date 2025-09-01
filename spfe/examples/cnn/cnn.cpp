@@ -13,8 +13,8 @@ typedef char Scalar;
 #define CONV1_IN_WIDTH WIDTH
 #define CONV1_IN_HEIGHT HEIGHT
 #define CONV1_INPUTS (CONV1_IN_WIDTH*CONV1_IN_HEIGHT)
-#define CONV1_OUT_WIDTH (WIDTH-1)
-#define CONV1_OUT_HEIGHT (HEIGHT-1)
+#define CONV1_OUT_WIDTH (WIDTH-2)
+#define CONV1_OUT_HEIGHT (HEIGHT-2)
 #define CONV1_OUTPUTS ((CONV1_OUT_WIDTH)*(CONV1_OUT_HEIGHT))
 #define CONV1_KERNEL_END (CONV1_KERNEL_SIZE/2)
 #define CONV1_KERNEL_START (-CONV1_KERNEL_END)
@@ -79,8 +79,8 @@ Conv1Out conv1(Conv1In in) {
       for (int k_y = 0, offset_y = CONV1_KERNEL_START; k_y < CONV1_KERNEL_SIZE; k_y++, offset_y++) {
 #pragma hls_unroll yes
         for (int k_x = 0, offset_x = CONV1_KERNEL_START; k_x < CONV1_KERNEL_SIZE; k_x++, offset_x++) {
-          int in_x = (x + 1) + offset_x;
-          int in_y = (y + 1) + offset_y;
+          int in_x = (x + CONV1_KERNEL_END) + offset_x;
+          int in_y = (y + CONV1_KERNEL_END) + offset_y;
           result.values[idx] += in.values[in_y * CONV1_IN_HEIGHT + in_x] * in.weights[k_y * CONV1_KERNEL_SIZE + k_x];
         }
       }
